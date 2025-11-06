@@ -65,3 +65,6 @@ def get_room_items(limit: int = 5):
 @app.get("/ping")
 def ping():
     return {"status": "awake"}
+@app.get("/routes")
+def list_routes():
+    return [r.path for r in app.routes]
