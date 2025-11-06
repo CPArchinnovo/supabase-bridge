@@ -9,15 +9,27 @@ import os
 SUPABASE_URL = "https://twlduqptfrkmwhyglzsi.supabase.co"
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR3bGR1cXB0ZnJya213aHlnbXpsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MTI2MjI0NiwiZXhwIjoyMDc2ODM4MjQ2fQ._JSvX4KZKnAh4nvRaoAYfFyhliTLPzh0QZk4_hbN7To"  # (not anon)
 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
-# CORS – allow Wix, Bolt, Emergent to call this API
+# ✅ Add ALL your allowed origins here
+origins = [
+    "https://cpart14.wixsite.com",        # your published Wix domain
+    "https://editor.wix.com",             # for preview mode
+    "https://www.wix.com",                # fallback
+    "http://localhost:3000",              # local test (optional)
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,        # <--- specific allowed origins
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
